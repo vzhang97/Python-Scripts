@@ -60,7 +60,7 @@ cmds.addAttr(ctrl, sn="prop_name", ln="prop_name", nn="Prop Name", at="enum", en
 
 
 # Iterate over the props and connect the appropriate attributes
-for i in range(len(cleanProps)):
+for i in range(len(cleanProps) - 1):
 	cmds.createNode("condition", n=(ctrl + "_" + cleanProps[i] + "_cond"))
 	cmds.setAttr((ctrl + "_" + cleanProps[i] + "_cond.colorIfTrueR"), 1) #True is 1
 	cmds.setAttr((ctrl + "_" + cleanProps[i] + "_cond.colorIfFalseR"), 0) #False is 0
