@@ -28,7 +28,8 @@ obj_child = None #Object's child
 for object in objects:
     
     #Create the stack
-    spacenul = cmds.group(n=object+"_ctrl_grp", em=True)
+    homenul = cmds.group(n=object+"_ctrl_grp", em=True)
+    spacenul = cmds.group(n=object+"_ctrl_offset_grp", em=True, parent=homenul)
     
 
     #Create the controller with X-axis as its normal direction
@@ -40,25 +41,26 @@ for object in objects:
 
 
     #Move the group to joint's location#
-    temp = cmds.parentConstraint(object, spacenul, mo=False)
+    temp = cmds.parentConstraint(object, homenul, mo=False)
     cmds.delete(temp)
+
+
+    #Constraint the controller to the object
+    #Group the constraints
+    pc = cmds.parentConstraint(object_ctrl, object, mo=False)
+    
+    if obj_child is not None:
+        cmds.parent(child_stack, object_ctrl[0])
     
     #Check if current_object has a child 
     #Parent the child's stack to the current_object's controller
     obj_child = cmds.listRelatives(object, typ=['joint', 'transform'], c=True)
     
 
-    #Constraint the controller to the object
-    pc = cmds.parentConstraint(object_ctrl, object, mo=False)
-    
-    
-    if obj_child is not None:
-        cmds.parent(child_stack, object_ctrl[0])
 
     #Create reference for future parenting#
-    child_stack = spacenul 
-
-
+    child_stack = homenul 
+  
 cmds.select(cl=True)
 obj_child = None
 child_stack = None
